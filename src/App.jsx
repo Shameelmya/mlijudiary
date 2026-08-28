@@ -1082,15 +1082,15 @@ const ProgramCard = ({ program }) => {
       
       {/* Priority Indicator background over the time area */}
       {permissions.canViewPriority && (
-        <div className={`absolute left-0 top-0 bottom-0 w-[88px] sm:w-[104px] transition-colors ${
+        <div className={`absolute left-0 top-0 bottom-0 w-[74px] sm:w-[88px] transition-colors ${
           program.completed ? 'bg-stone-200/50' :
-          priorityName === 'high' ? 'bg-[#ef4444]' :
-          priorityName === 'medium' ? 'bg-[#f59e0b]' : 'bg-[#10b981]'
+          priorityName === 'high' ? 'bg-[#c24141]' :
+          priorityName === 'medium' ? 'bg-[#d97706]' : 'bg-[#208f5a]'
         }`}></div>
       )}
 
       {/* Time / Type Column */}
-      <div className="w-[84px] sm:w-[100px] flex-shrink-0 text-center sm:text-left flex flex-col justify-center items-center sm:items-start py-4 px-3 sm:p-5 relative z-10">
+      <div className="w-[74px] sm:w-[88px] flex-shrink-0 text-center sm:text-left flex flex-col justify-center items-center sm:items-start py-4 px-2 sm:px-4 sm:py-5 relative z-10">
         {isTodo ? (
           <div className={`w-8 h-8 rounded-full flex items-center justify-center ${program.completed ? 'bg-stone-100 text-stone-300' : showPriority ? 'bg-white/20 text-white' : 'bg-amber-50 text-amber-700'}`}>
             <IconBookOpen size={16} />
@@ -1110,7 +1110,7 @@ const ProgramCard = ({ program }) => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 min-w-0 py-4 sm:py-5 pl-2 pr-2 sm:pr-4 relative z-10 flex flex-col justify-center">
+      <div className="flex-1 min-w-0 py-4 sm:py-5 pl-3 pr-2 sm:pl-4 sm:pr-4 relative z-10 flex flex-col justify-center">
         
         <p className={`text-base sm:text-[17px] font-medium leading-snug whitespace-pre-wrap break-words ${
           program.completed ? 'text-stone-500 line-through decoration-stone-300' : 'text-stone-900'
