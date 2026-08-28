@@ -976,7 +976,18 @@ const PrintModal = ({ isOpen, onClose, onPrint, viewMode, currentDate, programsC
                             <input type="checkbox" checked={selectedIds.includes(p.id)} onChange={() => handleToggle(p.id)} className="w-4 h-4 text-[#4a3b32] focus:ring-[#4a3b32] border-stone-300 rounded cursor-pointer" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className={`text-sm font-medium truncate ${selectedIds.includes(p.id) ? 'text-stone-900' : 'text-stone-500'}`}>{p.eventName}</p>
+                            <div className="flex items-center gap-2">
+                              <p className={`text-sm font-medium truncate ${selectedIds.includes(p.id) ? 'text-stone-900' : 'text-stone-500'}`}>{p.eventName}</p>
+                              {p.type !== 'todo' && (
+                                <span className={`text-[8px] font-bold px-1.5 py-[2px] rounded-md border uppercase tracking-wider leading-none flex-shrink-0 ${
+                                  p.priority === 'high' ? 'bg-red-50 text-red-600 border-red-100' : 
+                                  p.priority === 'low' ? 'bg-green-50 text-green-700 border-green-200' : 
+                                  'bg-amber-50 text-amber-700 border-amber-200'
+                                }`}>
+                                  {p.priority || 'medium'}
+                                </span>
+                              )}
+                            </div>
                             {viewMode === 'schedule' && <p className={`text-xs mt-0.5 ${selectedIds.includes(p.id) ? 'text-stone-500' : 'text-stone-400'}`}>{displayTime}</p>}
                           </div>
                         </label>
@@ -1062,44 +1073,44 @@ const ProgramCard = ({ program }) => {
       onPointerLeave={handlePointerUp}
       onPointerCancel={handlePointerUp}
       style={{ WebkitTouchCallout: 'none', userSelect: 'none' }}
-      className={`group bg-white rounded-2xl p-4 sm:p-5 shadow-sm border transition-all duration-300 flex items-start gap-4 relative overflow-hidden ${
+      className={`group bg-white rounded-2xl shadow-sm border transition-all duration-300 flex items-stretch relative overflow-hidden ${
         program.completed 
           ? 'border-stone-100 bg-stone-50/50' 
           : 'border-stone-200 hover:shadow-md hover:border-stone-300'
       }`}
     >
       
-      {/* Priority Indicator strip on the left */}
+      {/* Priority Indicator background over the time area */}
       {permissions.canViewPriority && (
-        <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${
-          program.completed ? 'bg-stone-200' :
-          priorityName === 'high' ? 'bg-red-400' :
-          priorityName === 'medium' ? 'bg-amber-500' : 'bg-green-400'
+        <div className={`absolute left-0 top-0 bottom-0 w-[88px] sm:w-[104px] transition-colors ${
+          program.completed ? 'bg-stone-200/50' :
+          priorityName === 'high' ? 'bg-[#ef4444]' :
+          priorityName === 'medium' ? 'bg-[#f59e0b]' : 'bg-[#10b981]'
         }`}></div>
       )}
 
       {/* Time / Type Column */}
-      <div className="w-16 sm:w-20 flex-shrink-0 pl-1 text-center sm:text-left flex flex-col justify-center items-center sm:items-start pt-1">
+      <div className="w-[84px] sm:w-[100px] flex-shrink-0 text-center sm:text-left flex flex-col justify-center items-center sm:items-start py-4 px-3 sm:p-5 relative z-10">
         {isTodo ? (
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${program.completed ? 'bg-stone-100 text-stone-300' : 'bg-amber-50 text-amber-700'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${program.completed ? 'bg-stone-100 text-stone-300' : showPriority ? 'bg-white/20 text-white' : 'bg-amber-50 text-amber-700'}`}>
             <IconBookOpen size={16} />
           </div>
         ) : program.time ? (
           <>
-            <span className={`text-base sm:text-lg font-bold tracking-tight ${program.completed ? 'text-stone-400' : 'text-stone-800'}`}>
+            <span className={`text-[17px] sm:text-[19px] font-bold tracking-tight leading-none ${showPriority ? 'text-white' : program.completed ? 'text-stone-400' : 'text-stone-800'}`}>
               {displayTime}
             </span>
-            <span className={`text-xs font-semibold ${program.completed ? 'text-stone-400' : 'text-amber-800'}`}>
+            <span className={`text-[11px] font-bold tracking-wider uppercase mt-1 ${showPriority ? 'text-white/80' : program.completed ? 'text-stone-400' : 'text-amber-800'}`}>
               {ampm}
             </span>
           </>
         ) : (
-          <span className="text-stone-300 text-xl font-light pl-2">—</span>
+          <span className={`text-xl font-light pl-2 ${showPriority ? 'text-white/70' : 'text-stone-300'}`}>—</span>
         )}
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 min-w-0 pt-1">
+      <div className="flex-1 min-w-0 py-4 sm:py-5 pl-2 pr-2 sm:pr-4 relative z-10 flex flex-col justify-center">
         
         <p className={`text-base sm:text-[17px] font-medium leading-snug whitespace-pre-wrap break-words ${
           program.completed ? 'text-stone-500 line-through decoration-stone-300' : 'text-stone-900'
@@ -1129,20 +1140,7 @@ const ProgramCard = ({ program }) => {
           </div>
         )}
 
-        {program.locationLink && (
-          <div className="mt-2 flex items-center text-sm">
-            <IconMapPin size={14} className={`mr-1.5 flex-shrink-0 ${program.completed ? 'text-stone-400' : 'text-blue-600'}`} />
-            <a 
-              href={program.locationLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`truncate font-medium transition-colors ${program.completed ? 'text-stone-400 cursor-default pointer-events-none' : 'text-blue-600 hover:text-blue-800 hover:underline'}`}
-              onClick={(e) => program.completed && e.preventDefault()}
-            >
-              Location Map
-            </a>
-          </div>
-        )}
+
 
         {isTodo && program.link && (
           <div className="mt-1 flex items-center text-sm">
@@ -1161,7 +1159,7 @@ const ProgramCard = ({ program }) => {
       </div>
 
       {/* Actions & Priority */}
-      <div className="flex flex-col items-center justify-start gap-1 flex-shrink-0 relative pt-0.5">
+      <div className="flex flex-col items-center justify-start gap-2 flex-shrink-0 relative py-4 pr-4 sm:py-5 sm:pr-5">
         {showPriority && (
           <span className={`text-[8px] font-bold px-1.5 py-[2px] rounded-md border uppercase tracking-wider leading-none ${priorityStyles[priorityName]}`}>
             {priorityName}
@@ -1200,30 +1198,44 @@ const ProgramCard = ({ program }) => {
             </>
           )}
           
-          {permissions.canComplete && (
-            <button 
-              onClick={handleToggle}
-              disabled={isUpdating}
-              className={`p-1.5 rounded-full transition-all focus:outline-none ${
-                program.completed 
-                  ? 'text-green-600 hover:bg-green-50' 
-                  : 'text-stone-300 hover:text-stone-500 hover:bg-stone-100'
-              }`}
-            >
-              {isUpdating ? (
-                <div className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-stone-300 border-t-stone-600 rounded-full animate-spin" />
-              ) : program.completed ? (
-                <IconCheckCircle size={22} className="sm:w-6 sm:h-6" />
-              ) : (
-                <IconCircle size={22} className="sm:w-6 sm:h-6" />
+          {isTodo ? (
+            <>
+              {permissions.canComplete && (
+                <button 
+                  onClick={handleToggle}
+                  disabled={isUpdating}
+                  className={`p-1.5 rounded-full transition-all focus:outline-none ${
+                    program.completed 
+                      ? 'text-green-600 hover:bg-green-50' 
+                      : 'text-stone-300 hover:text-stone-500 hover:bg-stone-100'
+                  }`}
+                >
+                  {isUpdating ? (
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-stone-300 border-t-stone-600 rounded-full animate-spin" />
+                  ) : program.completed ? (
+                    <IconCheckCircle size={22} className="sm:w-6 sm:h-6" />
+                  ) : (
+                    <IconCircle size={22} className="sm:w-6 sm:h-6" />
+                  )}
+                </button>
               )}
-            </button>
-          )}
-          
-          {!permissions.canComplete && program.completed && (
-            <div className="p-1.5">
-              <IconCheckCircle size={20} className="text-green-600" />
-            </div>
+              {!permissions.canComplete && program.completed && (
+                <div className="p-1.5">
+                  <IconCheckCircle size={20} className="text-green-600" />
+                </div>
+              )}
+            </>
+          ) : (
+            program.locationLink && (
+              <a 
+                href={program.locationLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-1.5 text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-full transition-colors flex items-center justify-center"
+              >
+                <IconMapPin size={22} className="sm:w-6 sm:h-6" />
+              </a>
+            )
           )}
         </div>
       </div>
@@ -2489,8 +2501,8 @@ User said: "${transcript}"`
                                   )}
                                 </div>
                                 {p.locationLink && (
-                                  <a href={p.locationLink} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 inline-flex items-center no-underline text-blue-600 text-[11px] bg-blue-50 px-2 py-1 rounded border border-blue-200" style={{ textDecoration: 'none' }}>
-                                    <span style={{ marginRight: '4px' }}>📍</span> Location Map
+                                  <a href={p.locationLink} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 text-blue-600 text-[11px] font-medium leading-[14px] text-center mt-0.5" style={{ textDecoration: 'none', minWidth: '45px' }}>
+                                    View<br/>Location
                                   </a>
                                 )}
                               </div>
