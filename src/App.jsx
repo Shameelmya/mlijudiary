@@ -976,19 +976,21 @@ const PrintModal = ({ isOpen, onClose, onPrint, viewMode, currentDate, programsC
                             <input type="checkbox" checked={selectedIds.includes(p.id)} onChange={() => handleToggle(p.id)} className="w-4 h-4 text-[#4a3b32] focus:ring-[#4a3b32] border-stone-300 rounded cursor-pointer" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2">
-                              <p className={`text-sm font-medium truncate ${selectedIds.includes(p.id) ? 'text-stone-900' : 'text-stone-500'}`}>{p.eventName}</p>
-                              {p.type !== 'todo' && (
-                                <span className={`text-[8px] font-bold px-1.5 py-[2px] rounded-md border uppercase tracking-wider leading-none flex-shrink-0 ${
-                                  p.priority === 'high' ? 'bg-red-50 text-red-600 border-red-100' : 
-                                  p.priority === 'low' ? 'bg-green-50 text-green-700 border-green-200' : 
-                                  'bg-amber-50 text-amber-700 border-amber-200'
-                                }`}>
-                                  {p.priority || 'medium'}
-                                </span>
-                              )}
-                            </div>
-                            {viewMode === 'schedule' && <p className={`text-xs mt-0.5 ${selectedIds.includes(p.id) ? 'text-stone-500' : 'text-stone-400'}`}>{displayTime}</p>}
+                            <p className={`text-sm font-medium truncate ${selectedIds.includes(p.id) ? 'text-stone-900' : 'text-stone-500'}`}>{p.eventName}</p>
+                            {viewMode === 'schedule' && (
+                              <div className="flex items-center gap-2 mt-0.5">
+                                <p className={`text-xs ${selectedIds.includes(p.id) ? 'text-stone-500' : 'text-stone-400'}`}>{displayTime}</p>
+                                {p.type !== 'todo' && (
+                                  <span className={`text-[8px] font-bold px-1.5 py-[2px] rounded-md border uppercase tracking-wider leading-none flex-shrink-0 ${
+                                    p.priority === 'high' ? 'bg-red-50 text-red-600 border-red-100' : 
+                                    p.priority === 'low' ? 'bg-green-50 text-green-700 border-green-200' : 
+                                    'bg-amber-50 text-amber-700 border-amber-200'
+                                  }`}>
+                                    {p.priority || 'medium'} Priority
+                                  </span>
+                                )}
+                              </div>
+                            )}
                           </div>
                         </label>
                       );
