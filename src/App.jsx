@@ -1233,7 +1233,7 @@ const ProgramCard = ({ program }) => {
                 href={program.locationLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-1.5 text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-full transition-colors flex items-center justify-center"
+                className="p-1.5 text-stone-700 hover:bg-stone-100 hover:text-stone-900 rounded-full transition-colors flex items-center justify-center"
               >
                 <IconMapPin size={22} className="sm:w-6 sm:h-6" />
               </a>
