@@ -61,6 +61,9 @@ const IconRefresh = ({ size = 20, className = "" }) => (
 const IconLink = ({ size = 20, className = "" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
 );
+const IconMapPin = ({ size = 20, className = "" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+);
 
 const IconMic = ({ size = 20, className = "" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
@@ -348,6 +351,7 @@ const ProgramForm = ({ initialData, onSubmit, onCancel, isSaving }) => {
   const [eventName, setEventName] = useState(initialData?.eventName || '');
   const [coName, setCoName] = useState(initialData?.coName || '');
   const [contactNumber, setContactNumber] = useState(initialData?.contactNumber || '');
+  const [locationLink, setLocationLink] = useState(initialData?.locationLink || '');
   const [link, setLink] = useState(initialData?.link || '');
   const [priority, setPriority] = useState(initialData?.priority || 'medium');
 
@@ -369,6 +373,7 @@ const ProgramForm = ({ initialData, onSubmit, onCancel, isSaving }) => {
       eventName: eventName.trim(), 
       coName: coName.trim(),
       contactNumber: contactNumber.trim(),
+      locationLink: locationLink.trim(),
       link: entryMode === 'todo' ? link.trim() : null,
       priority 
     });
@@ -505,6 +510,22 @@ const ProgramForm = ({ initialData, onSubmit, onCancel, isSaving }) => {
             onChange={(e) => setContactNumber(e.target.value)}
             className="w-full pl-10 pr-4 py-3 rounded-xl border border-stone-200 focus:border-[#4a3b32] focus:ring-1 focus:ring-[#4a3b32] outline-none transition-all"
             placeholder="Mobile or office number"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-stone-700 mb-1.5">Google Maps Location <span className="text-stone-400 font-normal">(Optional)</span></label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-stone-400">
+            <IconMapPin size={16} />
+          </div>
+          <input
+            type="url"
+            value={locationLink}
+            onChange={(e) => setLocationLink(e.target.value)}
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-stone-200 focus:border-[#4a3b32] focus:ring-1 focus:ring-[#4a3b32] outline-none transition-all"
+            placeholder="https://maps.app.goo.gl/..."
           />
         </div>
       </div>
@@ -1104,6 +1125,21 @@ const ProgramCard = ({ program }) => {
               onClick={(e) => program.completed && e.preventDefault()}
             >
               {program.contactNumber}
+            </a>
+          </div>
+        )}
+
+        {program.locationLink && (
+          <div className="mt-2 flex items-center text-sm">
+            <IconMapPin size={14} className={`mr-1.5 flex-shrink-0 ${program.completed ? 'text-stone-400' : 'text-blue-600'}`} />
+            <a 
+              href={program.locationLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`truncate font-medium transition-colors ${program.completed ? 'text-stone-400 cursor-default pointer-events-none' : 'text-blue-600 hover:text-blue-800 hover:underline'}`}
+              onClick={(e) => program.completed && e.preventDefault()}
+            >
+              Location Map
             </a>
           </div>
         )}
@@ -2441,14 +2477,21 @@ User said: "${transcript}"`
                                   <span className="text-[9px] bg-stone-100 text-stone-500 px-2 py-0.5 rounded uppercase font-bold tracking-wider">Completed</span>
                                 </div>
                               )}
-                              <div className={p.completed ? "line-through text-stone-400 whitespace-pre-wrap leading-snug" : "font-normal leading-snug whitespace-pre-wrap"}>
-                                {p.eventName}
-                                {p.coName && `\nC/o: ${p.coName}`}
-                                {p.contactNumber && (
-                                  <>
-                                    <br />
-                                    Mob: <a href={`tel:${p.contactNumber}`} className="text-blue-600 no-underline">{p.contactNumber}</a>
-                                  </>
+                              <div className="flex justify-between items-start gap-2">
+                                <div className={p.completed ? "line-through text-stone-400 whitespace-pre-wrap leading-snug" : "font-normal leading-snug whitespace-pre-wrap"}>
+                                  {p.eventName}
+                                  {p.coName && `\nC/o: ${p.coName}`}
+                                  {p.contactNumber && (
+                                    <>
+                                      <br />
+                                      Mob: <a href={`tel:${p.contactNumber}`} className="text-blue-600 no-underline">{p.contactNumber}</a>
+                                    </>
+                                  )}
+                                </div>
+                                {p.locationLink && (
+                                  <a href={p.locationLink} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 inline-flex items-center no-underline text-blue-600 text-[11px] bg-blue-50 px-2 py-1 rounded border border-blue-200" style={{ textDecoration: 'none' }}>
+                                    <span style={{ marginRight: '4px' }}>📍</span> Location Map
+                                  </a>
                                 )}
                               </div>
                               {p.type === 'todo' && p.link && <div className="font-normal break-all mt-1">{p.link}</div>}
