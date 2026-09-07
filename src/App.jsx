@@ -1813,7 +1813,37 @@ const MainApp = () => {
     setCurrentDate(newDate);
   };
 
+  const checkTimeClash = (newTime, currentId = null) => {
+    if (!newTime) return null;
+    const [h, m] = newTime.split(':').map(Number);
+    const newMins = h * 60 + m;
+    
+    for (const p of programs) {
+      if (p.id === currentId || p.type === 'todo' || !p.time) continue;
+      const [ph, pm] = p.time.split(':').map(Number);
+      const pMins = ph * 60 + pm;
+      const diff = Math.abs(newMins - pMins);
+      if (diff < 60) {
+        return p;
+      }
+    }
+    return null;
+  };
+
   const handleAdd = async (data) => {
+    if (data.type === 'schedule' && data.time) {
+      const clash = checkTimeClash(data.time);
+      if (clash) {
+        const [h, m] = clash.time.split(':').map(Number);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        const timeStr = `${h12}:${m.toString().padStart(2, '0')} ${ampm}`;
+        if (!window.confirm(`There is a meeting on ${timeStr} (${clash.eventName}). Are you sure to add this?`)) {
+          return;
+        }
+      }
+    }
+
     setIsSaving(true);
     try {
       const newDoc = { 
@@ -1832,6 +1862,19 @@ const MainApp = () => {
   };
 
   const handleEdit = async (data) => {
+    if (data.type === 'schedule' && data.time) {
+      const clash = checkTimeClash(data.time, editProgram.id);
+      if (clash) {
+        const [h, m] = clash.time.split(':').map(Number);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        const timeStr = `${h12}:${m.toString().padStart(2, '0')} ${ampm}`;
+        if (!window.confirm(`There is a meeting on ${timeStr} (${clash.eventName}). Are you sure to save this?`)) {
+          return;
+        }
+      }
+    }
+
     setIsSaving(true);
     try {
       await updateDoc(doc(db, 'programs', editProgram.id), data);
