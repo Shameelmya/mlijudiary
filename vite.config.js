@@ -7,10 +7,10 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Minister Schedule & Notes',
-        short_name: 'MinisterApp',
+        name: 'Adv M Liju Diary',
+        short_name: 'Liju Diary',
         description: 'Secure Offline Schedule and Notes App',
         theme_color: '#ffffff',
         background_color: '#ffffff',
