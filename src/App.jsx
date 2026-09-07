@@ -190,7 +190,10 @@ const LoginCover = () => {
               <img src="/minister.png" alt="Minister" className="w-full h-full object-cover" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-white drop-shadow-md">Minister's Day</h1>
-            <p className="text-amber-100/90 mt-1 text-[13px] font-medium tracking-wide">Adv M Liju - Hon. Minister of Excise and Cooperation, Keralam</p>
+            <div className="mt-1 flex flex-col gap-0.5">
+              <p className="text-amber-50 text-[15px] font-bold tracking-wide">Adv. M Liju</p>
+              <p className="text-amber-100/90 text-[12px] font-medium tracking-wide">Hon. Minister of Excise and Cooperation, Keralam</p>
+            </div>
           </div>
         </div>
         
