@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Adv M Liju Diary',
-        short_name: 'Liju Diary',
+        name: "Minister's Day",
+        short_name: "Minister's Day",
         description: 'Secure Offline Schedule and Notes App',
         theme_color: '#ffffff',
         background_color: '#ffffff',
