@@ -73,12 +73,12 @@ const IconSettings = ({ size = 20, className = "" }) => (
 );
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB-944yLcCXCT_ZPuvsSTRroNV-Gxdiw3c",
-  authDomain: "km-shaji-diary.firebaseapp.com",
-  projectId: "km-shaji-diary",
-  storageBucket: "km-shaji-diary.firebasestorage.app",
-  messagingSenderId: "205371244740",
-  appId: "1:205371244740:web:9e86b088a0ad93f83cc991"
+  apiKey: "AIzaSyAt4BoKmp34i7ZlfZM3yQUJCwe3aWjw86w",
+  authDomain: "m-liju-diary.firebaseapp.com",
+  projectId: "m-liju-diary",
+  storageBucket: "m-liju-diary.firebasestorage.app",
+  messagingSenderId: "917208389889",
+  appId: "1:917208389889:web:d9681ebcb8742dda536300"
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -163,7 +163,7 @@ const LoginCover = () => {
     
     let isValid = false;
     if (selectedRole === ROLES.PS_EDIT) {
-      if (password === 'shaji@123') isValid = true;
+      if (password === 'liju@123') isValid = true;
     } else if (selectedRole === ROLES.PS_VIEW && selectedStaff) {
       if (password === selectedStaff.password) isValid = true;
     }
@@ -190,7 +190,7 @@ const LoginCover = () => {
               <img src="/minister.png" alt="Minister" className="w-full h-full object-cover" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-white drop-shadow-md">Minister's Day</h1>
-            <p className="text-amber-100/90 mt-1 text-[13px] font-medium tracking-wide">KM Shaji - Hon. LSGD Minister, Keralam</p>
+            <p className="text-amber-100/90 mt-1 text-[13px] font-medium tracking-wide">Adv M Liju - Hon. Minister of Excise and Cooperation, Kerala</p>
           </div>
         </div>
         
@@ -1348,7 +1348,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `km-shaji-backup-${getLocalDateString(new Date())}.json`;
+      a.download = `m-liju-backup-${getLocalDateString(new Date())}.json`;
       a.click();
       URL.revokeObjectURL(url);
     } catch (error) {
@@ -1639,16 +1639,16 @@ const MainApp = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   
-  const [activeScreen, setActiveScreen] = useState(() => localStorage.getItem('shaji_activeScreen') || 'main');
-  const [viewMode, setViewMode] = useState(() => localStorage.getItem('shaji_viewMode') || 'schedule'); // 'schedule' | 'todo'
+  const [activeScreen, setActiveScreen] = useState(() => localStorage.getItem('liju_activeScreen') || 'main');
+  const [viewMode, setViewMode] = useState(() => localStorage.getItem('liju_viewMode') || 'schedule'); // 'schedule' | 'todo'
   const [sortBy, setSortBy] = useState('time');
   
   useEffect(() => {
-    localStorage.setItem('shaji_activeScreen', activeScreen);
+    localStorage.setItem('liju_activeScreen', activeScreen);
   }, [activeScreen]);
 
   useEffect(() => {
-    localStorage.setItem('shaji_viewMode', viewMode);
+    localStorage.setItem('liju_viewMode', viewMode);
   }, [viewMode]);
   
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -1870,7 +1870,7 @@ const MainApp = () => {
         
         const opt = {
           margin:       15,
-          filename:     `KM_Shaji_${config.viewMode === 'todo' ? 'ToDo' : 'Schedule'}_${dateStr}.pdf`,
+          filename:     `Adv_M_Liju_${config.viewMode === 'todo' ? 'ToDo' : 'Schedule'}_${dateStr}.pdf`,
           image:        { type: 'jpeg', quality: 1 },
           html2canvas:  { scale: 2, useCORS: true, logging: false },
           jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
@@ -2057,7 +2057,7 @@ User said: "${transcript}"`
               </div>
               <div className="leading-tight hidden md:block">
                 <h1 className="font-semibold text-sm text-stone-900 tracking-tight">Minister's Day</h1>
-                <p className="text-[10px] text-stone-500 font-medium">KM Shaji - LSGD</p>
+                <p className="text-[10px] text-stone-500 font-medium">Adv M Liju - Excise & Coop</p>
               </div>
             </div>
 
@@ -2386,8 +2386,8 @@ User said: "${transcript}"`
           <div className="w-[640px] mx-auto bg-white text-black p-8 font-sans" id="pdf-export-content">
             {/* Main Header */}
             <div className="mb-4 flex flex-col items-center border-b border-stone-200 pb-4">
-              <h1 className="text-3xl font-bold tracking-tight text-[#4a3b32] mb-1.5">KM Shaji</h1>
-              <h2 className="text-base font-normal text-stone-600 mb-1">Hon. Minister of LSGD, Keralam</h2>
+              <h1 className="text-3xl font-bold tracking-tight text-[#4a3b32] mb-1.5">Adv M Liju</h1>
+              <h2 className="text-base font-normal text-stone-600 mb-1">Hon. Minister of Excise and Cooperation, Kerala</h2>
               <h3 className="text-lg font-bold text-stone-900">
                 {printConfig.viewMode === 'todo' ? 'To-Do List' : 'Programme Schedule'}
               </h3>
