@@ -190,7 +190,7 @@ const LoginCover = () => {
               <img src="/minister.png" alt="Minister" className="w-full h-full object-cover" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-white drop-shadow-md">Minister's Day</h1>
-            <p className="text-amber-100/90 mt-1 text-[13px] font-medium tracking-wide">Adv M Liju - Hon. Minister of Excise and Cooperation, Kerala</p>
+            <p className="text-amber-100/90 mt-1 text-[13px] font-medium tracking-wide">Adv M Liju - Hon. Minister of Excise and Cooperation, Keralam</p>
           </div>
         </div>
         
@@ -2387,7 +2387,7 @@ User said: "${transcript}"`
             {/* Main Header */}
             <div className="mb-4 flex flex-col items-center border-b border-stone-200 pb-4">
               <h1 className="text-3xl font-bold tracking-tight text-[#4a3b32] mb-1.5">Adv M Liju</h1>
-              <h2 className="text-base font-normal text-stone-600 mb-1">Hon. Minister of Excise and Cooperation, Kerala</h2>
+              <h2 className="text-base font-normal text-stone-600 mb-1">Hon. Minister of Excise and Cooperation, Keralam</h2>
               <h3 className="text-lg font-bold text-stone-900">
                 {printConfig.viewMode === 'todo' ? 'To-Do List' : 'Programme Schedule'}
               </h3>
